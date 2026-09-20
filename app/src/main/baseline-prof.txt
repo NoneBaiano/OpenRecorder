@@ -1,0 +1,9 @@
+HSPLcom/openrecorder/app/**->**(**)**
+Lcom/openrecorder/app/MainActivity;
+Lcom/openrecorder/app/RecorderAppKt;
+Lcom/openrecorder/app/RecorderIcons;
+Lcom/openrecorder/app/RecorderScreenKt;
+Lcom/openrecorder/app/RecorderThemeKt;
+Lcom/openrecorder/app/RecorderPreferences;
+Lcom/openrecorder/app/ThemeMode;
+Lcom/openrecorder/app/RecordingState;

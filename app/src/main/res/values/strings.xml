@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Open Recorder</string>
+    <string name="nav_record">Record</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_recordings">Recordings</string>
+    <string name="record_title">Record</string>
+    <string name="section_appearance">Appearance</string>
+    <string name="section_options">Options</string>
+    <string name="section_about">About</string>
+    <string name="about_this_project">About this project</string>
+    <string name="about_tagline">An open source screen recorder!</string>
+    <string name="about_license">License</string>
+    <string name="about_license_value" translatable="false">GPL-3</string>
+    <string name="about_version">Version</string>
+    <string name="about_version_value" translatable="false">1.0.0</string>
+    <string name="version_tap_thanks">Thanks for using Open Recorder!</string>
+    <string name="open_source_licenses">Open source licenses</string>
+    <string name="open_source_license_summary">%1$s, %2$s</string>
+    <string name="navigate_back">Go back</string>
+    <string name="library_activity_compose" translatable="false">Activity Compose</string>
+    <string name="library_core_ktx" translatable="false">AndroidX Core KTX</string>
+    <string name="library_androidx_annotation" translatable="false">AndroidX Annotation</string>
+    <string name="library_androidx_runtime_components" translatable="false">Additional AndroidX runtime components</string>
+    <string name="library_navigation_event_compose" translatable="false">AndroidX NavigationEvent Compose</string>
+    <string name="library_compose_foundation" translatable="false">Compose Foundation</string>
+    <string name="library_compose_material3_window_size_class" translatable="false">Compose Material 3 Window Size Class</string>
+    <string name="library_compose_runtime" translatable="false">Compose Runtime</string>
+    <string name="library_compose_ui" translatable="false">Compose UI</string>
+    <string name="library_jspecify" translatable="false">JSpecify</string>
+    <string name="library_kotlin_stdlib" translatable="false">Kotlin Standard Library</string>
+    <string name="library_kotlinx_coroutines" translatable="false">Kotlinx Coroutines</string>
+    <string name="library_material_kolor" translatable="false">MaterialKolor</string>
+    <string name="library_miuix_core" translatable="false">Miuix Core</string>
+    <string name="library_miuix_preference" translatable="false">Miuix Preference</string>
+    <string name="library_miuix_shader" translatable="false">Miuix Shader</string>
+    <string name="library_miuix_squircle" translatable="false">Miuix Squircle</string>
+    <string name="library_miuix_ui" translatable="false">Miuix UI</string>
+    <string name="library_poko_annotations" translatable="false">Poko Annotations</string>
+    <string name="library_aosp_systemui" translatable="false">Android Open Source Project (SystemUI)</string>
+    <string name="library_asterisk_ng" translatable="false">AsteriskNG</string>
+    <string name="license_apache_2" translatable="false">Apache-2.0</string>
+    <string name="license_gpl_3" translatable="false">GPL-3.0-only</string>
+    <string name="license_mit" translatable="false">MIT</string>
+    <string name="version_activity_compose" translatable="false">1.13.0</string>
+    <string name="version_core_ktx" translatable="false">1.17.0</string>
+    <string name="version_compose" translatable="false">1.11.1</string>
+    <string name="version_compose_material3_window_size_class" translatable="false">1.9.0</string>
+    <string name="version_navigation_event" translatable="false">1.1.2</string>
+    <string name="version_kotlin" translatable="false">2.4.10</string>
+    <string name="version_material_kolor" translatable="false">4.1.1</string>
+    <string name="version_miuix" translatable="false">0.9.3</string>
+    <string name="version_poko" translatable="false">0.21.1</string>
+    <string name="version_jspecify" translatable="false">1.0.0</string>
+    <string name="version_asterisk_ng" translatable="false">1.4.2</string>
+    <string name="url_activity_compose" translatable="false">https://developer.android.com/jetpack/androidx/releases/activity#1.13.0</string>
+    <string name="url_androidx" translatable="false">https://developer.android.com/jetpack/androidx</string>
+    <string name="url_core_ktx" translatable="false">https://developer.android.com/jetpack/androidx/releases/core#1.17.0</string>
+    <string name="url_androidx_annotation" translatable="false">https://developer.android.com/jetpack/androidx/releases/annotation</string>
+    <string name="url_navigation_event" translatable="false">https://developer.android.com/jetpack/androidx/releases/navigationevent#1.1.2</string>
+    <string name="url_compose_multiplatform" translatable="false">https://github.com/JetBrains/compose-multiplatform</string>
+    <string name="url_jspecify" translatable="false">https://jspecify.dev/</string>
+    <string name="url_kotlin" translatable="false">https://kotlinlang.org/</string>
+    <string name="url_kotlinx_coroutines" translatable="false">https://github.com/Kotlin/kotlinx.coroutines</string>
+    <string name="url_material_kolor" translatable="false">https://github.com/jordond/materialkolor</string>
+    <string name="url_miuix" translatable="false">https://github.com/compose-miuix-ui/miuix</string>
+    <string name="url_poko" translatable="false">https://github.com/drewhamilton/Poko</string>
+    <string name="url_aosp_license" translatable="false">https://source.android.com/docs/setup/about/licenses</string>
+    <string name="url_asterisk_ng" translatable="false">https://github.com/Asterisk4Magisk/AsteriskNG/releases/tag/v1.4.2</string>
+    <string name="view_on_github">View source code on GitHub</string>
+    <string name="github_url" translatable="false">https://github.com/NoneBaiano/OpenRecorder</string>
+    <string name="github_open_failed">Could not open GitHub.</string>
+    <string name="open_license">Open license</string>
+    <string name="license_url" translatable="false">https://www.gnu.org/licenses/gpl-3.0.html</string>
+    <string name="license_open_failed">Could not open the license.</string>
+    <string name="section_status">Status</string>
+    <string name="audio_label">Audio</string>
+    <string name="audio_none">No audio</string>
+    <string name="audio_internal">Internal audio</string>
+    <string name="audio_microphone">Microphone</string>
+    <string name="audio_both">Microphone and internal audio</string>
+    <string name="theme_label">Theme</string>
+    <string name="theme_system">Follow system</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_monet_system">Follow system (Monet)</string>
+    <string name="theme_monet_light">Light (Monet)</string>
+    <string name="theme_monet_dark">Dark (Monet)</string>
+    <string name="enable_predictive_back">Enable predictive back gesture</string>
+    <string name="enable_predictive_back_summary">Preview the destination while swiping back.</string>
+    <string name="sample_rate_label">Sample rate</string>
+    <string name="sample_rate_44">44.1 kHz</string>
+    <string name="sample_rate_48">48 kHz</string>
+    <string name="video_resolution_label">Resolution</string>
+    <string name="video_resolution_native">Native</string>
+    <string name="video_resolution_1080p">1080p</string>
+    <string name="video_resolution_720p">720p</string>
+    <string name="video_resolution_480p">480p</string>
+    <string name="video_frame_rate_label">Frame rate</string>
+    <string name="video_frame_rate_auto">Automatic</string>
+    <string name="video_frame_rate_120">120 fps</string>
+    <string name="video_frame_rate_90">90 fps</string>
+    <string name="video_frame_rate_60">60 fps</string>
+    <string name="video_frame_rate_30">30 fps</string>
+    <string name="force_16_by_9_letterboxing">Force 16:9 with letterboxing</string>
+    <string name="force_16_by_9_letterboxing_summary">Fit the full capture inside a 16:9 frame without cropping.</string>
+    <string name="video_bitrate_label">Video bitrate</string>
+    <string name="video_bitrate_auto">Automatic</string>
+    <string name="video_bitrate_4">4 Mbps</string>
+    <string name="video_bitrate_8">8 Mbps</string>
+    <string name="video_bitrate_16">16 Mbps</string>
+    <string name="video_bitrate_24">24 Mbps</string>
+    <string name="video_codec_label">Video codec</string>
+    <string name="video_codec_h264">H.264</string>
+    <string name="video_codec_h265">H.265</string>
+    <string name="video_codec_not_supported">%1$s is not supported by this device.</string>
+    <string name="recording_countdown_label">Recording countdown</string>
+    <string name="countdown_0_seconds">0 seconds</string>
+    <string name="countdown_3_seconds">3 seconds</string>
+    <string name="countdown_5_seconds">5 seconds</string>
+    <string name="countdown_10_seconds">10 seconds</string>
+    <string name="naming_pattern_label">File naming pattern</string>
+    <string name="naming_pattern_day_month_year">dd-mm-yyyy_hh-mm-ss</string>
+    <string name="naming_pattern_month_day_year">mm-dd-yyyy_hh-mm-ss</string>
+    <string name="naming_pattern_year_month_day">yyyy-mm-dd_hh-mm-ss</string>
+    <string name="naming_pattern_year_day_month">yyyy-dd-mm_hh-mm-ss</string>
+    <string name="recording_orientation_label">Recording orientation</string>
+    <string name="orientation_automatic">Automatic</string>
+    <string name="orientation_portrait">Portrait</string>
+    <string name="orientation_landscape">Landscape</string>
+    <string name="recordings_title">Recordings</string>
+    <string name="recordings_count">Recorded Videos: %1$d</string>
+    <string name="recordings_loading">Loading recordings…</string>
+    <string name="recordings_empty">No recordings</string>
+    <string name="recordings_empty_summary">Your recorded videos will be here.</string>
+    <string name="recordings_sort_by">Sort by</string>
+    <string name="recordings_sort_date">Date</string>
+    <string name="recordings_sort_size">Size</string>
+    <string name="recordings_sort_duration">Duration</string>
+    <string name="recordings_load_error">Could not load recordings</string>
+    <string name="recordings_load_error_summary">Open this tab again to retry.</string>
+    <string name="recordings_selected_count">%1$d selected</string>
+    <string name="select_recording">Select recording</string>
+    <string name="select_all_recordings">Select all recordings</string>
+    <string name="open_recording">Open recording</string>
+    <string name="recording_selected">Selected</string>
+    <string name="delete_selected_recordings">Delete selected recordings</string>
+    <string name="clear_recording_selection">Clear selection</string>
+    <string name="recordings_delete_partial">%1$d deleted; %2$d could not be deleted.</string>
+    <string name="recordings_delete_failed">Could not delete the selected recordings.</string>
+    <string name="recordings_delete_canceled">Deletion canceled.</string>
+    <plurals name="recordings_deleted">
+        <item quantity="one">%1$d recording deleted.</item>
+        <item quantity="other">%1$d recordings deleted.</item>
+    </plurals>
+    <string name="recording_untitled">Untitled recording</string>
+    <string name="recording_open_failed">No app is available to play this video.</string>
+    <string name="recording_unavailable">This recording is no longer available.</string>
+    <string name="start_recording">Start recording</string>
+    <string name="cancel_recording">Cancel recording</string>
+    <string name="stop_recording">Stop recording</string>
+    <string name="status_idle">No recording in progress</string>
+    <string name="status_preparing">Preparing to record…</string>
+    <string name="status_recording">Recording in progress</string>
+    <string name="status_paused">Recording paused</string>
+    <string name="status_saving">Saving recording…</string>
+    <string name="status_countdown">Recording starts in %1$d</string>
+    <string name="status_idle_summary">Adjust your settings, then start your recording</string>
+    <string name="status_preparing_summary">The capture will begin after the countdown.</string>
+    <string name="status_recording_summary">Use the button below or the notification to stop.</string>
+    <string name="status_paused_summary">Resume from the notification or use the button below to stop.</string>
+    <string name="status_saving_summary">The video is being processed and saved on your device.</string>
+    <string name="status_countdown_summary">Open the screen you want to capture.</string>
+    <string name="permission_denied">Open Recorder permission was cancelled</string>
+    <string name="capture_permission_unavailable">Screen capture is unavailable on this device.</string>
+    <string name="audio_permission_denied">The selected audio option requires microphone permission.</string>
+    <string name="audio_capture_failed">Audio capture failed. The video will be saved without audio.</string>
+    <string name="recording_failed">Could not start recording.</string>
+    <string name="pause_recording_failed">Could not pause the recording.</string>
+    <string name="resume_recording_failed">Could not resume the recording.</string>
+    <string name="stop_recording_failed">Could not stop the recording.</string>
+    <string name="saved_success">Recording saved in Movies/Open Recorder.</string>
+    <string name="notification_channel">Screen recording</string>
+    <string name="notification_recording_title">Recording your screen</string>
+    <string name="notification_recording_text">Recording in progress.</string>
+    <string name="notification_paused_time">Paused • %1$s</string>
+    <string name="notification_preparing">Preparing the recording…</string>
+    <string name="notification_saving">Processing and saving the video…</string>
+    <string name="notification_saved_title">Recording saved</string>
+    <string name="notification_saved_text">Tap to watch the video.</string>
+    <string name="notification_error_title">Recording error</string>
+    <string name="notification_error_text">The video could not be recorded or saved.</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_resume">Resume</string>
+    <string name="action_share">Share</string>
+    <string name="action_delete">Delete</string>
+    <string name="recording_deleted">Recording deleted.</string>
+    <string name="recording_delete_failed">Could not delete the recording.</string>
+    <string name="share_video">Share recording</string>
+    <string name="quick_settings_tile_label">Open Recorder</string>
+    <string name="quick_settings_preparing">Starting</string>
+    <string name="quick_settings_recording">Recording</string>
+    <string name="quick_settings_paused">Paused</string>
+    <string name="quick_settings_saving">Saving</string>
+    <string name="quick_settings_stopping">Stopping</string>
+    <string name="quick_settings_description">%1$s, %2$s</string>
+</resources>

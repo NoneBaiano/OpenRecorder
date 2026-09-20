@@ -1,0 +1,38 @@
+Open Recorder
+Copyright 2026
+
+Open Recorder is distributed under the GNU General Public License, version 3
+only (GPL-3.0-only). See LICENSE for the complete terms.
+
+Third-party notices
+-------------------
+
+Portions of this product are adapted from the Android Open Source Project
+SystemUI screen recorder, Copyright The Android Open Source Project, and remain
+available under the Apache License 2.0.
+
+The controlled pager transition and navigation motion patterns are adapted
+from AsteriskNG 1.4.2, Copyright 2026, AsteriskNG contributors, under the GNU
+General Public License, version 3. The complete terms are in LICENSE.
+
+The user interface uses Miuix for Compose Multiplatform, including its Core,
+Preference, Shader, Squircle, and UI modules, which are licensed under the
+Apache License 2.0:
+https://github.com/compose-miuix-ui/miuix
+
+AndroidX Activity, Annotation, Collection, Concurrent Futures, Core,
+Interpolator, Lifecycle, NavigationEvent, ProfileInstaller, SavedState,
+Startup, and Tracing; Compose Multiplatform UI, Foundation, Runtime, and
+Material 3 Window Size Class; JSpecify; Poko Annotations; the Kotlin standard
+library; and Kotlinx Coroutines are licensed under the Apache License 2.0.
+
+Miuix uses MaterialKolor 4.1.1, Copyright 2024 Jordon de Hoog, under the MIT
+License. The complete terms are in LICENSES/MIT.txt:
+https://github.com/jordond/materialkolor
+
+The Gradle wrapper files are licensed under the Apache License 2.0.
+
+The complete Apache License 2.0 text for the applicable third-party components
+is in LICENSES/Apache-2.0.txt. Third-party components retain their original
+licenses; the GPL-3.0-only designation above applies to Open Recorder's own
+code and to the adapted AsteriskNG portions.
