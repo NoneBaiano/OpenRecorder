@@ -1,0 +1,45 @@
+Open Recorder is a simple, open-source screen recorder for Android with internal audio and a modern interface.
+
+No ads, no trackers, and no internet access: the app does not request the internet permission, so it cannot connect to the network. Your recordings stay on your device.
+
+<b>Recording</b>
+• Record your screen to MP4 files saved in Movies/Open Recorder
+• Audio: none, internal audio, microphone, or microphone and internal audio mixed together
+• Audio sample rate: 44.1 kHz or 48 kHz
+• Video codec: H.264 or H.265
+• Resolution: native, 1080p, 720p, or 480p
+• Frame rate: automatic, 120, 90, 60, or 30 fps
+• Video bitrate: automatic, 4, 8, 16, or 24 Mbps
+• Orientation: automatic, portrait, or landscape
+• Optional 16:9 letterboxing that fits the full capture without cropping
+• Countdown before recording: off, 3, 5, or 10 seconds
+• Customizable file naming pattern
+
+<b>Controls</b>
+• Pause, resume, and stop from the notification
+• Quick Settings tile to start and stop recording
+• Keeps recording if you close the app
+• After saving, watch, share, or delete the video from the notification
+
+<b>Recordings tab</b>
+• Browse the videos recorded by Open Recorder
+• Sort by date, size, or duration
+• Select one, several, or all recordings and delete them
+
+<b>Appearance</b>
+• Light, dark, or follow-system themes
+• Dynamic color (Monet) variants of each theme
+
+<b>Privacy</b>
+• No internet permission
+• No ads, no analytics, no crash reporting, no tracking
+• Backups are disabled
+• Other apps are not allowed to capture Open Recorder's audio
+
+<b>Limitations</b>
+These come from Android itself, not from this app:
+• Android asks for your confirmation every time you start a recording
+• Apps that block capture (DRM video, banking apps, anything using FLAG_SECURE) can appear black or silent
+• Internal audio only includes apps that allow playback capture
+
+Requires Android 10 or later.
