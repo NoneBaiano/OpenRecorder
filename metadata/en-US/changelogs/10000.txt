@@ -1,0 +1,7 @@
+First release.
+
+• Screen recording with internal audio, microphone, or both
+• H.264 and H.265, up to 120 fps
+• Notification controls and Quick Settings tile
+• Recordings tab with sorting and bulk delete
+• Light, dark, and Monet themes
