@@ -1,1 +1,1 @@
-Open-source screen recorder with internal audio. No ads, no tracking and no internet access.
+Open-source screen recorder with internal audio and no internet access
