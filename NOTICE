@@ -11,9 +11,12 @@ Portions of this product are adapted from the Android Open Source Project
 SystemUI screen recorder, Copyright The Android Open Source Project, and remain
 available under the Apache License 2.0.
 
-The controlled pager transition and navigation motion patterns are adapted
-from AsteriskNG 1.4.2, Copyright 2026, AsteriskNG contributors, under the GNU
-General Public License, version 3. The complete terms are in LICENSE.
+The main-screen navigation (pager state, bottom navigation structure and
+page transitions), and portions of the recordings list and loading-state
+UI, are adapted from AsteriskNG 1.4.2, Copyright 2026, AsteriskNG
+contributors, under the GNU General Public License, version 3. The complete
+terms are in LICENSE:
+https://github.com/Asterisk4Magisk/AsteriskNG
 
 The user interface uses Miuix for Compose Multiplatform, including its Core,
 Preference, Shader, Squircle, and UI modules, which are licensed under the
