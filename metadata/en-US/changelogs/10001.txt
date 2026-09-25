@@ -1,0 +1,1 @@
+Technical fix for build reproducibility on F-Droid. No user-facing changes.
