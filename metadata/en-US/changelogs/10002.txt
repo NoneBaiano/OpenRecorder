@@ -1,0 +1,3 @@
+• Added "Stop when lock screen" option
+• Removed the 5 GB recording size limit
+• Removed the 60 minutes recording duration limit
