@@ -12,8 +12,10 @@ No ads, no trackers, and no internet access: the app does not request the intern
 • Video bitrate: automatic, 4, 8, 16, or 24 Mbps
 • Orientation: automatic, portrait, or landscape
 • Optional 16:9 letterboxing that fits the full capture without cropping
+• Stop when lock screen: stop the recording when the screen locks
 • Countdown before recording: off, 3, 5, or 10 seconds
 • Customizable file naming pattern
+
 
 <b>Controls</b>
 • Pause, resume, and stop from the notification
