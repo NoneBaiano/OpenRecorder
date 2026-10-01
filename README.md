@@ -15,6 +15,7 @@ An open-source screen recorder for Android with internal audio and a modern inte
 - **Video bitrate:** automatic, 4, 8, 16, or 24 Mbps
 - **Orientation:** automatic, portrait, or landscape
 - **Force 16:9 with letterboxing:** fits the full capture inside a 16:9 frame without cropping
+- **Stop when lock screen:** stop the recording when the screen locks
 - **Recording countdown:** off, 3, 5, or 10 seconds, so you can open the screen you want to capture. You can cancel while it counts down
 - **File naming pattern:** `dd-mm-yyyy`, `mm-dd-yyyy`, `yyyy-mm-dd`, or `yyyy-dd-mm`, followed by `_hh-mm-ss`
 
