@@ -13,7 +13,7 @@
     <string name="about_license">License</string>
     <string name="about_license_value" translatable="false">GPL-3</string>
     <string name="about_version">Version</string>
-    <string name="about_version_value" translatable="false">1.0.0</string>
+    <string name="about_version_value" translatable="false">1.0.2</string>
     <string name="version_tap_thanks">Thanks for using Open Recorder!</string>
     <string name="open_source_licenses">Open source licenses</string>
     <string name="open_source_license_summary">%1$s, %2$s</string>
@@ -104,6 +104,8 @@
     <string name="video_frame_rate_30">30 fps</string>
     <string name="force_16_by_9_letterboxing">Force 16:9 with letterboxing</string>
     <string name="force_16_by_9_letterboxing_summary">Fit the full capture inside a 16:9 frame without cropping.</string>
+    <string name="stop_when_lock_screen">Stop when lock screen</string>
+    <string name="stop_when_lock_screen_summary">Stop the recording when the screen locks.</string>
     <string name="video_bitrate_label">Video bitrate</string>
     <string name="video_bitrate_auto">Automatic</string>
     <string name="video_bitrate_4">4 Mbps</string>
