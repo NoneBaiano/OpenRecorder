@@ -6,9 +6,11 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
 import android.net.Uri;
 import android.os.Build;
@@ -53,6 +55,8 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
     private static final String EXTRA_VIDEO_FRAME_RATE = "video_frame_rate";
     private static final String EXTRA_FORCE_16_BY_9_LETTERBOXING =
             "force_16_by_9_letterboxing";
+    private static final String EXTRA_STOP_WHEN_LOCK_SCREEN =
+            "stop_when_lock_screen";
     private static final String EXTRA_VIDEO_BITRATE = "video_bitrate";
     private static final String EXTRA_VIDEO_CODEC = "video_codec";
     private static final String EXTRA_NAMING_PATTERN = "naming_pattern";
@@ -74,7 +78,20 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
     private volatile long recordingStartedAtElapsedRealtime;
     private volatile long pausedAtElapsedRealtime;
     private volatile long totalPausedDurationMs;
+    private volatile boolean stopWhenLockScreen;
     private AudioSource audioSource = AudioSource.NONE;
+
+    private final BroadcastReceiver screenOffReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())
+                    && stopWhenLockScreen
+                    && !finished.get()
+                    && (recorder != null || pendingStart != null)) {
+                stopAndSave();
+            }
+        }
+    };
 
     static Intent createStartIntent(
             Context context,
@@ -85,6 +102,7 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
             int videoResolution,
             int videoFrameRate,
             boolean force16By9Letterboxing,
+            boolean stopWhenLockScreen,
             int videoBitrate,
             int videoCodec,
             String namingPattern,
@@ -103,6 +121,7 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
                         EXTRA_VIDEO_FRAME_RATE,
                         RecordingOptions.normalizeVideoFrameRate(videoFrameRate))
                 .putExtra(EXTRA_FORCE_16_BY_9_LETTERBOXING, force16By9Letterboxing)
+                .putExtra(EXTRA_STOP_WHEN_LOCK_SCREEN, stopWhenLockScreen)
                 .putExtra(
                         EXTRA_VIDEO_BITRATE,
                         RecordingOptions.normalizeVideoBitrate(videoBitrate))
@@ -148,6 +167,15 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
         });
         executor.execute(() -> ScreenRecorder.deleteStaleTemporaryFiles(this));
         notificationManager = getSystemService(NotificationManager.class);
+        IntentFilter screenOffFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(
+                    screenOffReceiver,
+                    screenOffFilter,
+                    Context.RECEIVER_EXPORTED);
+        } else {
+            registerReceiver(screenOffReceiver, screenOffFilter);
+        }
         NotificationChannel channel = new NotificationChannel(
                 CHANNEL_ID,
                 getString(R.string.notification_channel),
@@ -232,6 +260,9 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
                     RecordingOptions.DEFAULT_VIDEO_FRAME_RATE));
             boolean force16By9Letterboxing = intent.getBooleanExtra(
                     EXTRA_FORCE_16_BY_9_LETTERBOXING,
+                    false);
+            stopWhenLockScreen = intent.getBooleanExtra(
+                    EXTRA_STOP_WHEN_LOCK_SCREEN,
                     false);
             int videoBitrate = RecordingOptions.normalizeVideoBitrate(intent.getIntExtra(
                     EXTRA_VIDEO_BITRATE,
@@ -742,11 +773,6 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
     }
 
     @Override
-    public void onRecorderLimitReached() {
-        stopAndSave();
-    }
-
-    @Override
     public void onRecorderError(Exception error) {
         Log.e(TAG, "Video encoder error", error);
         stopAndSave();
@@ -770,6 +796,7 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
 
     @Override
     public void onDestroy() {
+        unregisterReceiver(screenOffReceiver);
         cancelPendingNotificationRestore();
         Runnable scheduledStart = pendingStart;
         if (scheduledStart != null) {

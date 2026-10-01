@@ -33,13 +33,11 @@ import java.util.concurrent.atomic.AtomicLong;
 final class ScreenRecorder {
     interface Listener {
         void onProjectionStopped();
-        void onRecorderLimitReached();
         void onRecorderError(Exception error);
         void onAudioCaptureFailed();
     }
 
     private static final String TAG = "ScreenRecorder";
-    private static final long MAX_FILE_SIZE = 5_000_000_000L;
     private static final long MIN_FILE_SIZE = 32L * 1024L * 1024L;
     private static final long STORAGE_RESERVE = 64L * 1024L * 1024L;
     private static final long CAPTURE_SIZE_TIMEOUT_MS = 500L;
@@ -479,6 +477,7 @@ final class ScreenRecorder {
     }
 
     private void prepareVideoRecorder(CaptureSize size) throws IOException {
+        ensureEnoughStorageToStart();
         videoRecorder = new VideoTrackRecorder(
                 size.width,
                 size.height,
@@ -486,13 +485,7 @@ final class ScreenRecorder {
                 videoCodec,
                 videoFrameRate,
                 size.sourceRefreshRate,
-                getMaximumVideoFileSize(),
                 new VideoTrackRecorder.Listener() {
-                    @Override
-                    public void onLimitReached() {
-                        listener.onRecorderLimitReached();
-                    }
-
                     @Override
                     public void onFailure(Exception error) {
                         listener.onRecorderError(error);
@@ -598,18 +591,16 @@ final class ScreenRecorder {
         }
     }
 
-    private long getMaximumVideoFileSize() throws IOException {
+    private void ensureEnoughStorageToStart() throws IOException {
         File storageProbe = context.getExternalFilesDir(null);
         if (storageProbe == null) {
             storageProbe = context.getCacheDir();
         }
         long usableSpace = storageProbe.getUsableSpace();
         long availableSpace = Math.max(0L, usableSpace - STORAGE_RESERVE);
-        long safeFileSize = availableSpace;
-        if (safeFileSize < MIN_FILE_SIZE) {
+        if (availableSpace < MIN_FILE_SIZE) {
             throw new IOException("Not enough storage space to start recording");
         }
-        return Math.min(MAX_FILE_SIZE, safeFileSize);
     }
 
     private static final class CaptureSize {

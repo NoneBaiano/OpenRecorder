@@ -25,13 +25,11 @@ import java.util.concurrent.atomic.AtomicReference;
 /** Encodes the screen through an asynchronous, hardware-first surface pipeline. */
 final class VideoTrackRecorder {
     interface Listener {
-        void onLimitReached();
         void onFailure(Exception error);
     }
 
     private static final String TAG = "VideoTrackRecorder";
     private static final int I_FRAME_INTERVAL_SECONDS = 1;
-    private static final long MAX_DURATION_US = 60L * 60L * 1_000_000L;
     private static final long ENCODER_STOP_TIMEOUT_MS = 8_000L;
     private static final long CALLBACK_THREAD_JOIN_TIMEOUT_MS = 1_000L;
     private static final long SOURCE_CLOCK_TOLERANCE_NANOS = 30_000_000_000L;
@@ -42,12 +40,10 @@ final class VideoTrackRecorder {
     private final int videoCodec;
     private final int requestedFrameRate;
     private final float sourceRefreshRate;
-    private final long maximumFileSize;
     private final Listener listener;
     private final AtomicReference<Exception> failure = new AtomicReference<>();
     private final AtomicBoolean resourcesFinished = new AtomicBoolean();
     private final AtomicBoolean encodingFinished = new AtomicBoolean();
-    private final AtomicBoolean limitNotified = new AtomicBoolean();
     private final CountDownLatch encodingFinishedLatch = new CountDownLatch(1);
 
     private volatile MediaCodec codec;
@@ -66,7 +62,6 @@ final class VideoTrackRecorder {
     private boolean sourceClockResolved;
     private long sourceToMonotonicOffsetNanos;
     private long lastWrittenPresentationTimeUs = -1L;
-    private long encodedBytesWritten;
     private int configuredFrameRate;
 
     private final MediaCodec.Callback codecCallback = new MediaCodec.Callback() {
@@ -114,9 +109,8 @@ final class VideoTrackRecorder {
             int videoCodec,
             int requestedFrameRate,
             float sourceRefreshRate,
-            long maximumFileSize,
             Listener listener) {
-        if (width <= 0 || height <= 0 || bitrate <= 0 || maximumFileSize <= 0L) {
+        if (width <= 0 || height <= 0 || bitrate <= 0) {
             throw new IllegalArgumentException("Invalid video encoder configuration");
         }
         this.width = width;
@@ -125,7 +119,6 @@ final class VideoTrackRecorder {
         this.videoCodec = RecordingOptions.normalizeVideoCodec(videoCodec);
         this.requestedFrameRate = RecordingOptions.normalizeVideoFrameRate(requestedFrameRate);
         this.sourceRefreshRate = sourceRefreshRate;
-        this.maximumFileSize = maximumFileSize;
         this.listener = listener;
     }
 
@@ -421,8 +414,6 @@ final class VideoTrackRecorder {
                     output.limit(info.offset + info.size);
                     info.presentationTimeUs = adjustedPresentationTimeUs;
                     outputTrack.writeSampleData(output, info);
-                    encodedBytesWritten += info.size;
-                    checkRecordingLimits(info.presentationTimeUs);
                 }
             }
         } catch (Exception error) {
@@ -480,17 +471,6 @@ final class VideoTrackRecorder {
                 configuredFrameRate);
         lastWrittenPresentationTimeUs = adjusted;
         return adjusted;
-    }
-
-    private void checkRecordingLimits(long presentationTimeUs) {
-        if ((presentationTimeUs >= MAX_DURATION_US || encodedBytesWritten >= maximumFileSize)
-                && limitNotified.compareAndSet(false, true)) {
-            try {
-                listener.onLimitReached();
-            } catch (RuntimeException error) {
-                Log.w(TAG, "Video limit listener failed", error);
-            }
-        }
     }
 
     private void logNegotiatedBitrate(MediaFormat outputFormat) {
