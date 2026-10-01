@@ -134,6 +134,7 @@ class MainActivity : ComponentActivity() {
                 selectedVideoResolution = recorderPreferences.loadVideoResolution(),
                 selectedVideoFrameRate = recorderPreferences.loadVideoFrameRate(),
                 force16By9Letterboxing = recorderPreferences.loadForce16By9Letterboxing(),
+                stopWhenLockScreen = recorderPreferences.loadStopWhenLockScreen(),
                 selectedVideoBitrate = recorderPreferences.loadVideoBitrate(),
                 selectedVideoCodec = recorderPreferences.loadVideoCodec(),
                 selectedCountdownSeconds = recorderPreferences.loadCountdownSeconds(),
@@ -197,6 +198,7 @@ class MainActivity : ComponentActivity() {
                                 .indexOf(settingsState.selectedVideoFrameRate)
                                 .coerceAtLeast(0),
                             force16By9Letterboxing = settingsState.force16By9Letterboxing,
+                            stopWhenLockScreen = settingsState.stopWhenLockScreen,
                             selectedVideoBitrateIndex = VIDEO_BITRATES
                                 .indexOf(settingsState.selectedVideoBitrate)
                                 .coerceAtLeast(0),
@@ -271,6 +273,16 @@ class MainActivity : ComponentActivity() {
                                     }
                                     recorderPreferences.saveForce16By9Letterboxing(
                                         forceLetterboxing,
+                                    )
+                                }
+                            },
+                            onStopWhenLockScreenChanged = { stopWhenLockScreen ->
+                                if (optionsEnabled) {
+                                    updateRecordingSettingsUiState {
+                                        it.copy(stopWhenLockScreen = stopWhenLockScreen)
+                                    }
+                                    recorderPreferences.saveStopWhenLockScreen(
+                                        stopWhenLockScreen,
                                     )
                                 }
                             },
@@ -665,6 +677,7 @@ class MainActivity : ComponentActivity() {
             state.selectedVideoResolution,
             state.selectedVideoFrameRate,
             state.force16By9Letterboxing,
+            state.stopWhenLockScreen,
             state.selectedVideoBitrate,
             state.selectedVideoCodec,
             state.selectedNamingPattern,
@@ -809,6 +822,7 @@ private data class RecordingSettingsUiState(
     val selectedVideoResolution: Int,
     val selectedVideoFrameRate: Int,
     val force16By9Letterboxing: Boolean,
+    val stopWhenLockScreen: Boolean,
     val selectedVideoBitrate: Int,
     val selectedVideoCodec: Int,
     val selectedCountdownSeconds: Int,

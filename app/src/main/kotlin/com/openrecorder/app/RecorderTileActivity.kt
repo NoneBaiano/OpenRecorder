@@ -141,6 +141,7 @@ class RecorderTileActivity : ComponentActivity() {
             recorderPreferences.loadVideoResolution(),
             recorderPreferences.loadVideoFrameRate(),
             recorderPreferences.loadForce16By9Letterboxing(),
+            recorderPreferences.loadStopWhenLockScreen(),
             recorderPreferences.loadVideoBitrate(),
             recorderPreferences.loadVideoCodec(),
             recorderPreferences.loadNamingPattern(),
