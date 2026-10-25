@@ -4,6 +4,7 @@ package com.openrecorder.app
 
 import android.Manifest
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
@@ -31,6 +32,10 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguage.wrap(newBase))
+    }
+
     private val projectionManager by lazy(LazyThreadSafetyMode.NONE) {
         getSystemService(MediaProjectionManager::class.java)
     }
@@ -184,6 +189,10 @@ class MainActivity : ComponentActivity() {
                             recordState.countdownSeconds == null
                         SettingsScreen(
                             selectedThemeIndex = appState.selectedThemeMode,
+                            selectedLanguageIndex = AppLanguage.selectedIndex(this@MainActivity),
+                            onLanguageSelected = { index ->
+                                if (optionsEnabled) AppLanguage.select(this@MainActivity, index)
+                            },
                             enablePredictiveBack = appState.enablePredictiveBack,
                             selectedAudioIndex = AUDIO_SOURCES
                                 .indexOf(settingsState.selectedAudioSource)
