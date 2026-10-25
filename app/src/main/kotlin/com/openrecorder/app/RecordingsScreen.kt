@@ -407,7 +407,7 @@ private fun RecordingCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = recording.name.ifEmpty {
-                        context.getString(R.string.recording_untitled)
+                        stringResource(R.string.recording_untitled)
                     },
                     style = MiuixTheme.textStyles.main,
                     fontWeight = FontWeight.Medium,

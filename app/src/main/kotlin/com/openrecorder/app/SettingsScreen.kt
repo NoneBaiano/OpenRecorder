@@ -82,6 +82,8 @@ private val SettingsTransitionCornerRadius = 28.dp
 @Composable
 internal fun SettingsScreen(
     selectedThemeIndex: Int,
+    selectedLanguageIndex: Int,
+    onLanguageSelected: (Int) -> Unit,
     enablePredictiveBack: Boolean,
     selectedAudioIndex: Int,
     selectedSampleRateIndex: Int,
@@ -193,85 +195,65 @@ internal fun SettingsScreen(
 
     val context = LocalContext.current
     val scrollBehavior = MiuixScrollBehavior()
-    val themeOptions = remember(context) {
-        listOf(
-            context.getString(R.string.theme_system),
-            context.getString(R.string.theme_light),
-            context.getString(R.string.theme_dark),
-            context.getString(R.string.theme_monet_system),
-            context.getString(R.string.theme_monet_light),
-            context.getString(R.string.theme_monet_dark),
-        )
-    }
-    val audioOptions = remember(context) {
-        listOf(
-            context.getString(R.string.audio_none),
-            context.getString(R.string.audio_microphone),
-            context.getString(R.string.audio_internal),
-            context.getString(R.string.audio_both),
-        )
-    }
-    val sampleRateOptions = remember(context) {
-        listOf(
-            context.getString(R.string.sample_rate_44),
-            context.getString(R.string.sample_rate_48),
-        )
-    }
-    val videoResolutionOptions = remember(context) {
-        listOf(
-            context.getString(R.string.video_resolution_native),
-            context.getString(R.string.video_resolution_1080p),
-            context.getString(R.string.video_resolution_720p),
-            context.getString(R.string.video_resolution_480p),
-        )
-    }
-    val videoFrameRateOptions = remember(context) {
-        listOf(
-            context.getString(R.string.video_frame_rate_auto),
-            context.getString(R.string.video_frame_rate_120),
-            context.getString(R.string.video_frame_rate_90),
-            context.getString(R.string.video_frame_rate_60),
-            context.getString(R.string.video_frame_rate_30),
-        )
-    }
-    val videoBitrateOptions = remember(context) {
-        listOf(
-            context.getString(R.string.video_bitrate_auto),
-            context.getString(R.string.video_bitrate_4),
-            context.getString(R.string.video_bitrate_8),
-            context.getString(R.string.video_bitrate_16),
-            context.getString(R.string.video_bitrate_24),
-        )
-    }
-    val videoCodecOptions = remember(context) {
-        listOf(
-            context.getString(R.string.video_codec_h264),
-            context.getString(R.string.video_codec_h265),
-        )
-    }
-    val countdownOptions = remember(context) {
-        listOf(
-            context.getString(R.string.countdown_0_seconds),
-            context.getString(R.string.countdown_3_seconds),
-            context.getString(R.string.countdown_5_seconds),
-            context.getString(R.string.countdown_10_seconds),
-        )
-    }
-    val namingPatternOptions = remember(context) {
-        listOf(
-            context.getString(R.string.naming_pattern_day_month_year),
-            context.getString(R.string.naming_pattern_month_day_year),
-            context.getString(R.string.naming_pattern_year_month_day),
-            context.getString(R.string.naming_pattern_year_day_month),
-        )
-    }
-    val orientationOptions = remember(context) {
-        listOf(
-            context.getString(R.string.orientation_automatic),
-            context.getString(R.string.orientation_portrait),
-            context.getString(R.string.orientation_landscape),
-        )
-    }
+    val themeOptions = listOf(
+        stringResource(R.string.theme_system),
+        stringResource(R.string.theme_light),
+        stringResource(R.string.theme_dark),
+        stringResource(R.string.theme_monet_system),
+        stringResource(R.string.theme_monet_light),
+        stringResource(R.string.theme_monet_dark),
+    )
+    val audioOptions = listOf(
+        stringResource(R.string.audio_none),
+        stringResource(R.string.audio_microphone),
+        stringResource(R.string.audio_internal),
+        stringResource(R.string.audio_both),
+    )
+    val sampleRateOptions = listOf(
+        stringResource(R.string.sample_rate_44),
+        stringResource(R.string.sample_rate_48),
+    )
+    val videoResolutionOptions = listOf(
+        stringResource(R.string.video_resolution_native),
+        stringResource(R.string.video_resolution_1080p),
+        stringResource(R.string.video_resolution_720p),
+        stringResource(R.string.video_resolution_480p),
+    )
+    val videoFrameRateOptions = listOf(
+        stringResource(R.string.video_frame_rate_auto),
+        stringResource(R.string.video_frame_rate_120),
+        stringResource(R.string.video_frame_rate_90),
+        stringResource(R.string.video_frame_rate_60),
+        stringResource(R.string.video_frame_rate_30),
+    )
+    val videoBitrateOptions = listOf(
+        stringResource(R.string.video_bitrate_auto),
+        stringResource(R.string.video_bitrate_4),
+        stringResource(R.string.video_bitrate_8),
+        stringResource(R.string.video_bitrate_16),
+        stringResource(R.string.video_bitrate_24),
+    )
+    val videoCodecOptions = listOf(
+        stringResource(R.string.video_codec_h264),
+        stringResource(R.string.video_codec_h265),
+    )
+    val countdownOptions = listOf(
+        stringResource(R.string.countdown_0_seconds),
+        stringResource(R.string.countdown_3_seconds),
+        stringResource(R.string.countdown_5_seconds),
+        stringResource(R.string.countdown_10_seconds),
+    )
+    val namingPatternOptions = listOf(
+        stringResource(R.string.naming_pattern_day_month_year),
+        stringResource(R.string.naming_pattern_month_day_year),
+        stringResource(R.string.naming_pattern_year_month_day),
+        stringResource(R.string.naming_pattern_year_day_month),
+    )
+    val orientationOptions = listOf(
+        stringResource(R.string.orientation_automatic),
+        stringResource(R.string.orientation_portrait),
+        stringResource(R.string.orientation_landscape),
+    )
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -310,6 +292,20 @@ internal fun SettingsScreen(
                             dismissRequestKey = popupDismissRequestKey,
                             onExpandedChange = { settingsPopupExpanded = it },
                             onSelected = onThemeSelected,
+                        )
+                        SelectablePreference(
+                            title = stringResource(R.string.language_label),
+                            items = listOf(
+                                stringResource(R.string.language_system),
+                                stringResource(R.string.language_english),
+                                stringResource(R.string.language_turkish),
+                            ),
+                            selectedIndex = selectedLanguageIndex,
+                            enabled = optionsEnabled,
+                            predictiveBackEnabled = enablePredictiveBack,
+                            dismissRequestKey = popupDismissRequestKey,
+                            onExpandedChange = { settingsPopupExpanded = it },
+                            onSelected = onLanguageSelected,
                         )
                         SwitchPreference(
                             title = stringResource(R.string.enable_predictive_back),

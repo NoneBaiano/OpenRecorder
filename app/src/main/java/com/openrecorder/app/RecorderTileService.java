@@ -3,6 +3,7 @@ package com.openrecorder.app;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.os.Build;
@@ -12,6 +13,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 public final class RecorderTileService extends TileService {
+    // Resolve each lookup so an already-bound service follows language changes.
+    @Override
+    public Resources getResources() {
+        return AppLanguage.wrap(getBaseContext()).getResources();
+    }
+
     private static final String TAG = "RecorderTileService";
 
     private volatile boolean listening;

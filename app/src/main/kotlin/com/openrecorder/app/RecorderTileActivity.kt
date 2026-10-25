@@ -3,6 +3,7 @@
 package com.openrecorder.app
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
@@ -19,6 +20,10 @@ import androidx.activity.result.contract.ActivityResultContracts
  * behind the Android permission dialogs and becomes active again as soon as capture is authorized.
  */
 class RecorderTileActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguage.wrap(newBase))
+    }
+
     private val projectionManager by lazy(LazyThreadSafetyMode.NONE) {
         getSystemService(MediaProjectionManager::class.java)
     }

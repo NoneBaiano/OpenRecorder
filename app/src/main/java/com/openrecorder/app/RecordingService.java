@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
@@ -27,6 +28,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RecordingService extends Service implements ScreenRecorder.Listener {
+    // Resolve each lookup so an already-bound service follows language changes.
+    @Override
+    public Resources getResources() {
+        return AppLanguage.wrap(getBaseContext()).getResources();
+    }
+
     private static final String TAG = "RecordingService";
     private static final String CHANNEL_ID = "screen_recording";
     private static final int NOTIFICATION_ID = 4273;
