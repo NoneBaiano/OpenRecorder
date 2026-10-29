@@ -4,6 +4,7 @@ package com.openrecorder.app
 
 import android.Manifest
 import android.content.ActivityNotFoundException
+import android.content.ClipData
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
@@ -121,6 +122,7 @@ class MainActivity : ComponentActivity() {
         appUiState = mutableStateOf(
             AppUiState(
                 selectedThemeMode = recorderPreferences.loadThemeMode(),
+                pageScale = recorderPreferences.loadPageScale(),
                 enablePredictiveBack = recorderPreferences.loadEnablePredictiveBack(),
             ),
         )
@@ -164,6 +166,7 @@ class MainActivity : ComponentActivity() {
             }
             RecorderTheme(
                 themeMode = appState.selectedThemeMode,
+                pageScale = appState.pageScale,
                 systemDark = systemDark,
             ) {
                 RecorderApp(
@@ -184,6 +187,11 @@ class MainActivity : ComponentActivity() {
                             recordState.countdownSeconds == null
                         SettingsScreen(
                             selectedThemeIndex = appState.selectedThemeMode,
+                            pageScale = appState.pageScale,
+                            onPageScaleSelected = { scale ->
+                                updateAppUiState { it.copy(pageScale = scale) }
+                                recorderPreferences.savePageScale(scale)
+                            },
                             enablePredictiveBack = appState.enablePredictiveBack,
                             selectedAudioIndex = AUDIO_SOURCES
                                 .indexOf(settingsState.selectedAudioSource)
@@ -355,6 +363,7 @@ class MainActivity : ComponentActivity() {
                             deleting = state.deleting,
                             onOpenRecording = ::openRecording,
                             onDeleteRecordings = ::deleteRecordings,
+                            onShareRecordings = ::shareRecordings,
                         )
                     },
                 )
@@ -463,6 +472,31 @@ class MainActivity : ComponentActivity() {
             startActivity(viewIntent)
         } catch (_: ActivityNotFoundException) {
             showToast(R.string.recording_open_failed, Toast.LENGTH_LONG)
+        } catch (_: SecurityException) {
+            showToast(R.string.recording_unavailable, Toast.LENGTH_LONG)
+        }
+    }
+
+    private fun shareRecordings(selectedRecordings: List<RecordingItem>) {
+        val uris = ArrayList(selectedRecordings.distinctBy(RecordingItem::id).map { it.uri })
+        if (uris.isEmpty()) return
+        val shareIntent = Intent(
+            if (uris.size == 1) Intent.ACTION_SEND else Intent.ACTION_SEND_MULTIPLE,
+        ).apply {
+            type = VIDEO_MIME_TYPE
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            if (uris.size == 1) {
+                putExtra(Intent.EXTRA_STREAM, uris.first())
+            } else {
+                putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+            }
+            clipData = ClipData.newUri(contentResolver, getString(R.string.share_video), uris.first())
+                .apply { uris.drop(1).forEach { addItem(ClipData.Item(it)) } }
+        }
+        try {
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.action_share)))
+        } catch (_: ActivityNotFoundException) {
+            showToast(R.string.recording_share_failed, Toast.LENGTH_LONG)
         } catch (_: SecurityException) {
             showToast(R.string.recording_unavailable, Toast.LENGTH_LONG)
         }
@@ -774,6 +808,8 @@ class MainActivity : ComponentActivity() {
 
         val VIDEO_RESOLUTIONS = listOf(
             RecordingOptions.VIDEO_RESOLUTION_NATIVE,
+            RecordingOptions.VIDEO_RESOLUTION_2160P,
+            RecordingOptions.VIDEO_RESOLUTION_1440P,
             RecordingOptions.VIDEO_RESOLUTION_1080P,
             RecordingOptions.VIDEO_RESOLUTION_720P,
             RecordingOptions.VIDEO_RESOLUTION_480P,
@@ -806,6 +842,7 @@ class MainActivity : ComponentActivity() {
 @Immutable
 private data class AppUiState(
     val selectedThemeMode: Int,
+    val pageScale: Int,
     val enablePredictiveBack: Boolean,
 )
 

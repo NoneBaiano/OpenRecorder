@@ -16,6 +16,8 @@ final class RecordingOptions {
     static final int VIDEO_RESOLUTION_1080P = 1;
     static final int VIDEO_RESOLUTION_720P = 2;
     static final int VIDEO_RESOLUTION_480P = 3;
+    static final int VIDEO_RESOLUTION_1440P = 4;
+    static final int VIDEO_RESOLUTION_2160P = 5;
     static final int DEFAULT_VIDEO_RESOLUTION = VIDEO_RESOLUTION_NATIVE;
 
     static final int VIDEO_FRAME_RATE_AUTO = 0;
@@ -67,7 +69,9 @@ final class RecordingOptions {
         if (value == VIDEO_RESOLUTION_NATIVE
                 || value == VIDEO_RESOLUTION_1080P
                 || value == VIDEO_RESOLUTION_720P
-                || value == VIDEO_RESOLUTION_480P) {
+                || value == VIDEO_RESOLUTION_480P
+                || value == VIDEO_RESOLUTION_1440P
+                || value == VIDEO_RESOLUTION_2160P) {
             return value;
         }
         return DEFAULT_VIDEO_RESOLUTION;

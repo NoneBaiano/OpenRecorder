@@ -81,6 +81,7 @@ internal fun RecordingsScreen(
     deleting: Boolean,
     onOpenRecording: (RecordingItem) -> Unit,
     onDeleteRecordings: (List<RecordingItem>) -> Unit,
+    onShareRecordings: (List<RecordingItem>) -> Unit,
 ) {
     val scrollBehavior = MiuixScrollBehavior()
     var selectedIds by remember { mutableStateOf(emptySet<Long>()) }
@@ -192,6 +193,16 @@ internal fun RecordingsScreen(
                                 } else {
                                     MiuixTheme.colorScheme.onSurface
                                 },
+                            )
+                        }
+                        IconButton(
+                            enabled = !busy && selectedRecordings.isNotEmpty(),
+                            onClick = { onShareRecordings(selectedRecordings) },
+                        ) {
+                            Icon(
+                                imageVector = RecorderIcons.Share,
+                                contentDescription = stringResource(R.string.action_share),
+                                tint = MiuixTheme.colorScheme.onSurface,
                             )
                         }
                         IconButton(

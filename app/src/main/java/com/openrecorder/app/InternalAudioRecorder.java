@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicReference;
 final class InternalAudioRecorder {
     private static final String TAG = "InternalAudioRecorder";
     private static final int BIT_RATE = 196_000;
-    private static final int CHANNEL_COUNT = 1;
     private static final int READ_SAMPLES = 4096;
     private static final float MIC_GAIN = 1.4f;
     private static final long CODEC_TIMEOUT_US = 10_000L;
@@ -36,6 +35,7 @@ final class InternalAudioRecorder {
     private final boolean capturePlayback;
     private final boolean includeMicrophone;
     private final int sampleRate;
+    private final int channelCount;
     private final AtomicReference<Exception> failure = new AtomicReference<>();
     private final AtomicBoolean codecResourcesFinished = new AtomicBoolean();
     private final MediaCodec.BufferInfo codecBufferInfo = new MediaCodec.BufferInfo();
@@ -70,6 +70,7 @@ final class InternalAudioRecorder {
         this.projection = projection;
         this.capturePlayback = audioSource.usesInternalAudio();
         this.includeMicrophone = audioSource.usesMicrophone();
+        this.channelCount = capturePlayback && includeMicrophone ? 2 : 1;
         if (!capturePlayback && !includeMicrophone) {
             throw new IllegalArgumentException("An audio capture source is required");
         }
@@ -187,7 +188,7 @@ final class InternalAudioRecorder {
         MediaFormat codecFormat = MediaFormat.createAudioFormat(
                 MediaFormat.MIMETYPE_AUDIO_AAC,
                 sampleRate,
-                CHANNEL_COUNT);
+                channelCount);
         codecFormat.setInteger(
                 MediaFormat.KEY_AAC_PROFILE,
                 MediaCodecInfo.CodecProfileLevel.AACObjectLC);
@@ -220,7 +221,7 @@ final class InternalAudioRecorder {
         try {
             Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
             if (capturePlayback && includeMicrophone) {
-                captureMixedAudio(primaryRecord, primaryName);
+                captureSeparateAudio(primaryRecord, primaryName);
             } else {
                 captureDirectAudio(primaryRecord, primaryName);
             }
@@ -292,10 +293,11 @@ final class InternalAudioRecorder {
         }
     }
 
-    private void captureMixedAudio(AudioRecord primaryRecord, String primaryName)
+    private void captureSeparateAudio(AudioRecord primaryRecord, String primaryName)
             throws IOException, InterruptedException {
         short[] primary = new short[READ_SAMPLES];
         short[] microphone = new short[READ_SAMPLES];
+        short[] stereo = new short[READ_SAMPLES * 2];
         while (running) {
             if (!waitUntilActive()) {
                 break;
@@ -324,7 +326,7 @@ final class InternalAudioRecorder {
             int microphoneCount = microphoneRecord.read(
                     microphone,
                     0,
-                    microphone.length,
+                    primaryCount,
                     AudioRecord.READ_BLOCKING);
             if (microphoneCount <= 0) {
                 if (running) {
@@ -336,8 +338,8 @@ final class InternalAudioRecorder {
                 break;
             }
             int sampleCount = Math.min(primaryCount, microphoneCount);
-            mix(primary, microphone, sampleCount);
-            queueShortPcm(primary, sampleCount, bufferStartNanos);
+            interleave(primary, microphone, stereo, sampleCount);
+            queueShortPcm(stereo, sampleCount, bufferStartNanos);
             drainCodec(false);
         }
     }
@@ -351,11 +353,12 @@ final class InternalAudioRecorder {
         }
     }
 
-    private void mix(short[] playback, short[] microphone, int count) {
+    // Left channel: internal audio. Right channel: microphone. No source mixing.
+    private static void interleave(short[] playback, short[] microphone, short[] stereo, int count) {
         for (int i = 0; i < count; i++) {
+            stereo[i * 2] = playback[i];
             int mic = Math.round(microphone[i] * MIC_GAIN);
-            int mixed = playback[i] + mic;
-            playback[i] = (short) Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, mixed));
+            stereo[i * 2 + 1] = (short) Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, mic));
         }
     }
 
@@ -494,18 +497,20 @@ final class InternalAudioRecorder {
                     throw new IOException("AAC encoder input buffer is unavailable");
                 }
                 input.clear();
-                int chunkFrames = Math.min(input.remaining() / 2, sourceEndFrame - sourceFrame);
+                int chunkFrames = Math.min(
+                        input.remaining() / (2 * channelCount),
+                        sourceEndFrame - sourceFrame);
                 if (chunkFrames == 0) {
                     throw new IOException("AAC encoder input buffer is too small");
                 }
                 input.order(ByteOrder.LITTLE_ENDIAN)
                         .asShortBuffer()
-                        .put(samples, sourceFrame, chunkFrames);
+                        .put(samples, sourceFrame * channelCount, chunkFrames * channelCount);
                 long chunkStartNanos = bufferStartNanos
                         + AudioFrameClock.framesToNanos(sourceFrame, sampleRate);
                 queueAudioInputBuffer(
                         inputIndex,
-                        chunkFrames * 2,
+                        chunkFrames * 2 * channelCount,
                         chunkStartNanos,
                         chunkFrames);
                 sourceFrame += chunkFrames;

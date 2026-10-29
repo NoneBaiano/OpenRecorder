@@ -4,6 +4,8 @@ package com.openrecorder.app;
 final class VideoEncodingProfile {
     private static final double LANDSCAPE_16_BY_9 = 16.0 / 9.0;
     private static final double PORTRAIT_9_BY_16 = 9.0 / 16.0;
+    private static final int LONG_EDGE_2160P = 3_840;
+    private static final int LONG_EDGE_1440P = 2_560;
     private static final int LONG_EDGE_1080P = 1_920;
     private static final int LONG_EDGE_720P = 1_280;
     private static final int LONG_EDGE_480P = 854;
@@ -123,6 +125,10 @@ final class VideoEncodingProfile {
         switch (RecordingOptions.normalizeVideoResolution(requestedResolution)) {
             case RecordingOptions.VIDEO_RESOLUTION_NATIVE:
                 return 0;
+            case RecordingOptions.VIDEO_RESOLUTION_2160P:
+                return LONG_EDGE_2160P;
+            case RecordingOptions.VIDEO_RESOLUTION_1440P:
+                return LONG_EDGE_1440P;
             case RecordingOptions.VIDEO_RESOLUTION_720P:
                 return LONG_EDGE_720P;
             case RecordingOptions.VIDEO_RESOLUTION_480P:

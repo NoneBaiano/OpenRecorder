@@ -4,9 +4,12 @@ package com.openrecorder.app
 
 import android.app.Activity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.Density
 import androidx.core.view.WindowCompat
 import top.yukonga.miuix.kmp.theme.ColorSchemeMode
 import top.yukonga.miuix.kmp.theme.MiuixTheme
@@ -18,6 +21,7 @@ import top.yukonga.miuix.kmp.theme.ThemePaletteStyle
 internal fun RecorderTheme(
     themeMode: Int,
     systemDark: Boolean,
+    pageScale: Int,
     content: @Composable () -> Unit,
 ) {
     val normalizedMode = ThemeMode.normalize(themeMode)
@@ -44,7 +48,15 @@ internal fun RecorderTheme(
 
     MiuixTheme(controller = controller) {
         SynchronizeSystemBars(darkTheme = resolvedDark)
-        content()
+        val density = LocalDensity.current
+        CompositionLocalProvider(
+            LocalDensity provides Density(
+                density.density * pageScale.coerceIn(90, 110) / 100f,
+                density.fontScale,
+            ),
+        ) {
+            content()
+        }
     }
 }
 

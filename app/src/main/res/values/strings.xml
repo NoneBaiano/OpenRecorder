@@ -6,6 +6,7 @@
     <string name="nav_recordings">Recordings</string>
     <string name="record_title">Record</string>
     <string name="section_appearance">Appearance</string>
+    <string name="page_scale_label">Page scale</string>
     <string name="section_options">Options</string>
     <string name="section_about">About</string>
     <string name="about_this_project">About this project</string>
@@ -93,6 +94,8 @@
     <string name="sample_rate_48">48 kHz</string>
     <string name="video_resolution_label">Resolution</string>
     <string name="video_resolution_native">Native</string>
+    <string name="video_resolution_2160p">2160p</string>
+    <string name="video_resolution_1440p">1440p</string>
     <string name="video_resolution_1080p">1080p</string>
     <string name="video_resolution_720p">720p</string>
     <string name="video_resolution_480p">480p</string>
@@ -196,6 +199,7 @@
     <string name="action_pause">Pause</string>
     <string name="action_resume">Resume</string>
     <string name="action_share">Share</string>
+    <string name="recording_share_failed">Could not share the recording.</string>
     <string name="action_delete">Delete</string>
     <string name="recording_deleted">Recording deleted.</string>
     <string name="recording_delete_failed">Could not delete the recording.</string>

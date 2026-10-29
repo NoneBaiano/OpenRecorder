@@ -26,6 +26,12 @@ internal class RecorderPreferences(context: Context) {
         preferences.edit().putInt(KEY_THEME_MODE, ThemeMode.normalize(value)).apply()
     }
 
+    fun loadPageScale(): Int = preferences.getInt(KEY_PAGE_SCALE, 100).coerceIn(90, 110)
+
+    fun savePageScale(value: Int) {
+        preferences.edit().putInt(KEY_PAGE_SCALE, value.coerceIn(90, 110)).apply()
+    }
+
     fun loadEnablePredictiveBack(): Boolean {
         if (preferences.contains(KEY_ENABLE_PREDICTIVE_BACK)) {
             return preferences.getBoolean(KEY_ENABLE_PREDICTIVE_BACK, false)
@@ -159,6 +165,7 @@ internal class RecorderPreferences(context: Context) {
     private companion object {
         const val PREFERENCES_NAME = "recorder_preferences"
         const val KEY_THEME_MODE = "theme_mode"
+        const val KEY_PAGE_SCALE = "page_scale"
         const val KEY_ENABLE_PREDICTIVE_BACK = "enable_predictive_back"
         const val KEY_DISABLE_PREDICTIVE_BACK_LEGACY = "disable_predictive_back"
         const val KEY_AUDIO_SOURCE = "audio_source"

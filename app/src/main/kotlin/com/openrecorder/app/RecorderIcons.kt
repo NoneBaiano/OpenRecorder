@@ -26,6 +26,27 @@ internal object RecorderIcons {
         }
     }
 
+    val Share: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
+        buildIcon("Share") {
+            moveTo(6f, 11f)
+            lineTo(18f, 4f)
+            lineTo(19f, 6f)
+            lineTo(8f, 12f)
+            lineTo(19f, 18f)
+            lineTo(18f, 20f)
+            lineTo(6f, 13f)
+            close()
+            for ((x, y) in listOf(6f to 12f, 18f to 5f, 18f to 19f)) {
+                moveTo(x + 3f, y)
+                curveTo(x + 3f, y + 1.66f, x + 1.66f, y + 3f, x, y + 3f)
+                curveTo(x - 1.66f, y + 3f, x - 3f, y + 1.66f, x - 3f, y)
+                curveTo(x - 3f, y - 1.66f, x - 1.66f, y - 3f, x, y - 3f)
+                curveTo(x + 1.66f, y - 3f, x + 3f, y - 1.66f, x + 3f, y)
+                close()
+            }
+        }
+    }
+
     val Play: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
         buildIcon("Play") {
             moveTo(8f, 5f)
