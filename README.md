@@ -10,7 +10,7 @@ An open-source screen recorder for Android with internal audio and a modern inte
 - **Audio sources:** no audio, internal audio, microphone, or microphone and internal audio mixed together
 - **Audio sample rate:** 44.1 kHz or 48 kHz
 - **Video codec:** H.264 or H.265
-- **Resolution:** native, 1080p, 720p, or 480p
+- **Resolution:** native, 2160p, 1440p, 1080p, 720p, or 480p
 - **Frame rate:** automatic, 120, 90, 60, or 30 fps
 - **Video bitrate:** automatic, 4, 8, 16, or 24 Mbps
 - **Orientation:** automatic, portrait, or landscape
@@ -32,12 +32,14 @@ An open-source screen recorder for Android with internal audio and a modern inte
 - Lists the videos recorded by Open Recorder, with total count
 - Sort by date, size, or duration
 - Open a video in your default player
+- Share one or multiple selected recordings with other apps
 - Select one, several, or all recordings and delete them (Android asks you to confirm)
 
 ### Appearance and settings
 
 - Light, dark, or follow-system themes
 - Dynamic color (Monet) variants of each theme
+- Page scale adjust the interface from 90% to 110% using a slider
 - Optional predictive back gesture (off by default)
 - Settings are saved between sessions
 
