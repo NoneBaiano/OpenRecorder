@@ -7,7 +7,7 @@ An open-source screen recorder for Android with internal audio and a modern inte
 ### Recording
 
 - Record your screen to MP4 files saved in `Movies/Open Recorder`
-- **Audio sources:** no audio, internal audio, microphone, or microphone and internal audio mixed together
+- **Audio sources:** no audio, internal audio, microphone, or microphone and internal audio as independent AAC tracks
 - **Audio sample rate:** 44.1 kHz or 48 kHz
 - **Video codec:** H.264 or H.265
 - **Resolution:** native, 2160p, 1440p, 1080p, 720p, or 480p
