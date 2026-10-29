@@ -14,7 +14,7 @@
     <string name="about_license">License</string>
     <string name="about_license_value" translatable="false">GPL-3</string>
     <string name="about_version">Version</string>
-    <string name="about_version_value" translatable="false">1.0.2</string>
+    <string name="about_version_value" translatable="false">1.0.3</string>
     <string name="version_tap_thanks">Thanks for using Open Recorder!</string>
     <string name="open_source_licenses">Open source licenses</string>
     <string name="open_source_license_summary">%1$s, %2$s</string>
