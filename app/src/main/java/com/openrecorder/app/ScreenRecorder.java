@@ -66,6 +66,7 @@ final class ScreenRecorder {
     private VirtualDisplay virtualDisplay;
     private Surface surface;
     private InternalAudioRecorder audioRecorder;
+    private InternalAudioRecorder microphoneRecorder;
     private RecordingMuxer recordingMuxer;
     private RecordingMuxer.Track videoOutputTrack;
     private RecordingTimeline timeline;
@@ -180,9 +181,18 @@ final class ScreenRecorder {
                 audioRecorder = new InternalAudioRecorder(
                         context,
                         projection,
-                        audioSource,
+                        audioSource.usesInternalAudio() ? AudioSource.INTERNAL : AudioSource.MICROPHONE,
                         audioSampleRate);
                 audioRecorder.prepare();
+                if (audioSource == AudioSource.INTERNAL_AND_MICROPHONE) {
+                    // A second encoder produces an independent AAC track in the same MP4.
+                    microphoneRecorder = new InternalAudioRecorder(
+                            context,
+                            projection,
+                            AudioSource.MICROPHONE,
+                            audioSampleRate);
+                    microphoneRecorder.prepare();
+                }
             } catch (Exception error) {
                 disableAudio(error);
             }
@@ -209,6 +219,9 @@ final class ScreenRecorder {
         if (audioRecorder != null) {
             try {
                 audioRecorder.start(timeline);
+                if (microphoneRecorder != null) {
+                    microphoneRecorder.start(timeline);
+                }
             } catch (Exception error) {
                 disableAudio(error);
             }
@@ -230,6 +243,9 @@ final class ScreenRecorder {
         if (audioRecorder != null) {
             try {
                 audioRecorder.pause();
+                if (microphoneRecorder != null) {
+                    microphoneRecorder.pause();
+                }
             } catch (Exception error) {
                 disableAudio(error);
             }
@@ -251,6 +267,9 @@ final class ScreenRecorder {
         if (audioRecorder != null) {
             try {
                 audioRecorder.resume();
+                if (microphoneRecorder != null) {
+                    microphoneRecorder.resume();
+                }
             } catch (Exception error) {
                 disableAudio(error);
             }
@@ -274,10 +293,16 @@ final class ScreenRecorder {
         if (audioRecorder != null) {
             audioRecorder.requestStop();
         }
+        if (microphoneRecorder != null) {
+            microphoneRecorder.requestStop();
+        }
 
         if (audioRecorder != null) {
             try {
                 audioRecorder.awaitStopped();
+                if (microphoneRecorder != null) {
+                    microphoneRecorder.awaitStopped();
+                }
             } catch (IOException error) {
                 disableAudio(error);
             }
@@ -326,9 +351,16 @@ final class ScreenRecorder {
     synchronized void release() {
         stopped = true;
         paused = false;
+        if (microphoneRecorder != null) {
+            microphoneRecorder.requestStop();
+        }
         if (audioRecorder != null) {
             audioRecorder.release();
             audioRecorder = null;
+        }
+        if (microphoneRecorder != null) {
+            microphoneRecorder.release();
+            microphoneRecorder = null;
         }
         releaseCaptureResources();
         releaseOutput();
@@ -388,7 +420,11 @@ final class ScreenRecorder {
             pendingVideoTrack = pendingMuxer.createTrack("video");
             videoRecorder.setOutputTrack(pendingVideoTrack);
             if (audioRecorder != null) {
-                audioRecorder.setOutputTrack(pendingMuxer.createTrack("audio"));
+                audioRecorder.setOutputTrack(pendingMuxer.createTrack(
+                        audioSource.usesInternalAudio() ? "internal audio" : "microphone"));
+            }
+            if (microphoneRecorder != null) {
+                microphoneRecorder.setOutputTrack(pendingMuxer.createTrack("microphone"));
             }
         } catch (Exception error) {
             if (pendingMuxer != null) {
@@ -582,9 +618,16 @@ final class ScreenRecorder {
         boolean notifyListener = !audioFailed;
         audioFailed = true;
         Log.e(TAG, "Audio capture failed; continuing without it", error);
+        if (microphoneRecorder != null) {
+            microphoneRecorder.requestStop();
+        }
         if (audioRecorder != null) {
             audioRecorder.release();
             audioRecorder = null;
+        }
+        if (microphoneRecorder != null) {
+            microphoneRecorder.release();
+            microphoneRecorder = null;
         }
         if (notifyListener) {
             listener.onAudioCaptureFailed();
