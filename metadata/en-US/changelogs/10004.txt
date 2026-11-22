@@ -1,1 +1,5 @@
-
+• Added floating bottom bar option in Appearance
+• Added a new tab with an Advanced controls section
+• Added 64, 128, 192 and 256 kbps audio bitrate options, with 64 kbps as default
+• Fixed the Sort menu to respect the predictive back setting
+• Adjusted content padding when the floating bottom bar is enabled
