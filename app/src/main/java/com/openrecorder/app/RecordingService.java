@@ -51,6 +51,7 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
     private static final String EXTRA_RESULT_DATA = "result_data";
     private static final String EXTRA_AUDIO_SOURCE = "audio_source";
     private static final String EXTRA_SAMPLE_RATE = "sample_rate";
+    private static final String EXTRA_AUDIO_BITRATE = "audio_bitrate";
     private static final String EXTRA_VIDEO_RESOLUTION = "video_resolution";
     private static final String EXTRA_VIDEO_FRAME_RATE = "video_frame_rate";
     private static final String EXTRA_FORCE_16_BY_9_LETTERBOXING =
@@ -99,6 +100,7 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
             Intent resultData,
             AudioSource audioSource,
             int sampleRate,
+            int audioBitrate,
             int videoResolution,
             int videoFrameRate,
             boolean force16By9Letterboxing,
@@ -114,6 +116,7 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
                 .putExtra(EXTRA_RESULT_DATA, resultData)
                 .putExtra(EXTRA_AUDIO_SOURCE, audioSource.ordinal())
                 .putExtra(EXTRA_SAMPLE_RATE, RecordingOptions.normalizeSampleRate(sampleRate))
+                .putExtra(EXTRA_AUDIO_BITRATE, RecordingOptions.normalizeAudioBitrate(audioBitrate))
                 .putExtra(
                         EXTRA_VIDEO_RESOLUTION,
                         RecordingOptions.normalizeVideoResolution(videoResolution))
@@ -252,6 +255,9 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
             int sampleRate = RecordingOptions.normalizeSampleRate(intent.getIntExtra(
                     EXTRA_SAMPLE_RATE,
                     RecordingOptions.DEFAULT_SAMPLE_RATE));
+            int audioBitrate = RecordingOptions.normalizeAudioBitrate(intent.getIntExtra(
+                    EXTRA_AUDIO_BITRATE,
+                    RecordingOptions.DEFAULT_AUDIO_BITRATE));
             int videoResolution = RecordingOptions.normalizeVideoResolution(intent.getIntExtra(
                     EXTRA_VIDEO_RESOLUTION,
                     RecordingOptions.DEFAULT_VIDEO_RESOLUTION));
@@ -281,6 +287,7 @@ public class RecordingService extends Service implements ScreenRecorder.Listener
                     resultData,
                     audioSource,
                     sampleRate,
+                    audioBitrate,
                     videoResolution,
                     videoFrameRate,
                     force16By9Letterboxing,

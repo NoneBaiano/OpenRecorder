@@ -3,6 +3,9 @@
     <string name="app_name">Open Recorder</string>
     <string name="nav_record">Record</string>
     <string name="nav_settings">Settings</string>
+    <string name="nav_others">Others</string>
+    <string name="advanced_controls">Advanced controls</string>
+    <string name="advanced_controls_summary">New root and shizuku features.</string>
     <string name="nav_recordings">Recordings</string>
     <string name="record_title">Record</string>
     <string name="section_appearance">Appearance</string>
@@ -89,9 +92,16 @@
     <string name="theme_monet_dark">Dark (Monet)</string>
     <string name="enable_predictive_back">Enable predictive back gesture</string>
     <string name="enable_predictive_back_summary">Preview the destination while swiping back.</string>
+    <string name="floating_bottom_bar">Enable floating bottom bar</string>
+    <string name="floating_bottom_bar_summary">Show the navigation bar floating over the content.</string>
     <string name="sample_rate_label">Sample rate</string>
     <string name="sample_rate_44">44.1 kHz</string>
     <string name="sample_rate_48">48 kHz</string>
+    <string name="audio_bitrate_label">Audio bitrate</string>
+    <string name="audio_bitrate_64">64 kbps</string>
+    <string name="audio_bitrate_128">128 kbps</string>
+    <string name="audio_bitrate_192">192 kbps</string>
+    <string name="audio_bitrate_256">256 kbps</string>
     <string name="video_resolution_label">Resolution</string>
     <string name="video_resolution_native">Native</string>
     <string name="video_resolution_2160p">2160p</string>

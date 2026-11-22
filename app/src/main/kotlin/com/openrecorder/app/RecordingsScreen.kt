@@ -52,6 +52,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.unit.dp
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.DropdownEntry
+import top.yukonga.miuix.kmp.basic.DropdownDefaults
 import top.yukonga.miuix.kmp.basic.DropdownItem
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
@@ -63,6 +64,7 @@ import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TopAppBar
 import top.yukonga.miuix.kmp.anim.folmeSpring
 import top.yukonga.miuix.kmp.menu.OverlayIconDropdownMenu
+import top.yukonga.miuix.kmp.popup.OverlayDropdownPopup
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.overScrollVertical
 import top.yukonga.miuix.kmp.utils.scrollEndHaptic
@@ -75,6 +77,7 @@ private const val SORT_BY_DURATION = 2
 
 @Composable
 internal fun RecordingsScreen(
+    enablePredictiveBack: Boolean,
     recordings: List<RecordingItem>,
     loading: Boolean,
     loadFailed: Boolean,
@@ -237,9 +240,10 @@ internal fun RecordingsScreen(
                             )
                         }
                     } else {
-                        OverlayIconDropdownMenu(
+                        RecordingsSortDropdownMenu(
                             entry = sortEntry,
                             enabled = !busy,
+                            enablePredictiveBack = enablePredictiveBack,
                         ) {
                             Icon(
                                 imageVector = RecorderIcons.Sort,
@@ -260,7 +264,7 @@ internal fun RecordingsScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding(),
-                bottom = 24.dp,
+                bottom = 24.dp + LocalFloatingNavigationBottomPadding.current,
             ),
         ) {
             when {
@@ -491,5 +495,50 @@ private fun RecordingsMessageState(
             style = MiuixTheme.textStyles.body2,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
+    }
+}
+
+@Composable
+private fun RecordingsSortDropdownMenu(
+    entry: DropdownEntry,
+    enabled: Boolean,
+    enablePredictiveBack: Boolean,
+    content: @Composable () -> Unit,
+) {
+    if (enablePredictiveBack) {
+        OverlayIconDropdownMenu(entry = entry, enabled = enabled, content = content)
+        return
+    }
+
+    // Keep Miuix's regular popup and exit animation, without interactive back progress.
+    var expanded by remember { mutableStateOf(false) }
+    var holdDown by remember { mutableStateOf(false) }
+    val hapticFeedback = LocalHapticFeedback.current
+    Box {
+        IconButton(
+            enabled = enabled,
+            holdDownState = holdDown,
+            onClick = {
+                expanded = !expanded
+                if (expanded) {
+                    holdDown = true
+                    hapticFeedback.performHapticFeedback(HapticFeedbackType.ContextClick)
+                }
+            },
+            content = content,
+        )
+        OverlayDropdownPopup(
+            entry = entry,
+            show = expanded,
+            onDismiss = { expanded = false },
+            onDismissFinished = { holdDown = false },
+            maxHeight = null,
+            dropdownColors = DropdownDefaults.dropdownColors(),
+            renderInRootScaffold = true,
+            collapseOnSelection = true,
+        )
+    }
+    NonPredictivePopupBackHandler(enabled = expanded) {
+        expanded = false
     }
 }

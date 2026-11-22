@@ -5,6 +5,12 @@ final class RecordingOptions {
     static final int SAMPLE_RATE_48_KHZ = 48_000;
     static final int DEFAULT_SAMPLE_RATE = SAMPLE_RATE_44_1_KHZ;
 
+    static final int AUDIO_BITRATE_64_KBPS = 64_000;
+    static final int AUDIO_BITRATE_128_KBPS = 128_000;
+    static final int AUDIO_BITRATE_192_KBPS = 192_000;
+    static final int AUDIO_BITRATE_256_KBPS = 256_000;
+    static final int DEFAULT_AUDIO_BITRATE = AUDIO_BITRATE_64_KBPS;
+
     static final int VIDEO_BITRATE_AUTO = 0;
     static final int VIDEO_BITRATE_4_MBPS = 4_000_000;
     static final int VIDEO_BITRATE_8_MBPS = 8_000_000;
@@ -53,6 +59,16 @@ final class RecordingOptions {
 
     static int normalizeSampleRate(int value) {
         return value == SAMPLE_RATE_48_KHZ ? SAMPLE_RATE_48_KHZ : SAMPLE_RATE_44_1_KHZ;
+    }
+
+    static int normalizeAudioBitrate(int value) {
+        if (value == AUDIO_BITRATE_64_KBPS
+                || value == AUDIO_BITRATE_128_KBPS
+                || value == AUDIO_BITRATE_192_KBPS
+                || value == AUDIO_BITRATE_256_KBPS) {
+            return value;
+        }
+        return DEFAULT_AUDIO_BITRATE;
     }
 
     static int normalizeVideoBitrate(int value) {

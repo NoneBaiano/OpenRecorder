@@ -82,7 +82,7 @@ internal fun AboutProjectScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding() + 12.dp,
-                bottom = 28.dp,
+                bottom = 28.dp + LocalFloatingNavigationBottomPadding.current,
             ),
         ) {
             item {

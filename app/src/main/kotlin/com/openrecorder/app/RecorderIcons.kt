@@ -119,6 +119,19 @@ internal object RecorderIcons {
         }.build()
     }
 
+    val Others: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
+        buildIcon("Others") {
+            for (x in listOf(5f, 12f, 19f)) {
+                moveTo(x + 2f, 12f)
+                curveTo(x + 2f, 13.1f, x + 1.1f, 14f, x, 14f)
+                curveTo(x - 1.1f, 14f, x - 2f, 13.1f, x - 2f, 12f)
+                curveTo(x - 2f, 10.9f, x - 1.1f, 10f, x, 10f)
+                curveTo(x + 1.1f, 10f, x + 2f, 10.9f, x + 2f, 12f)
+                close()
+            }
+        }
+    }
+
     val Recordings: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
         buildIcon("Recordings") {
             moveTo(3f, 4f)

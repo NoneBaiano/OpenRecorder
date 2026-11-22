@@ -124,6 +124,7 @@ class MainActivity : ComponentActivity() {
                 selectedThemeMode = recorderPreferences.loadThemeMode(),
                 pageScale = recorderPreferences.loadPageScale(),
                 enablePredictiveBack = recorderPreferences.loadEnablePredictiveBack(),
+                floatingBottomBar = recorderPreferences.loadFloatingBottomBar(),
             ),
         )
         recordScreenUiState = mutableStateOf(
@@ -133,6 +134,7 @@ class MainActivity : ComponentActivity() {
             RecordingSettingsUiState(
                 selectedAudioSource = recorderPreferences.loadAudioSource(),
                 selectedSampleRate = recorderPreferences.loadSampleRate(),
+                selectedAudioBitrate = recorderPreferences.loadAudioBitrate(),
                 selectedVideoResolution = recorderPreferences.loadVideoResolution(),
                 selectedVideoFrameRate = recorderPreferences.loadVideoFrameRate(),
                 force16By9Letterboxing = recorderPreferences.loadForce16By9Letterboxing(),
@@ -170,6 +172,7 @@ class MainActivity : ComponentActivity() {
                 systemDark = systemDark,
             ) {
                 RecorderApp(
+                    floatingBottomBar = appState.floatingBottomBar,
                     onRecordingsVisible = { loadRecordings() },
                     recordContent = {
                         val recordState = recordScreenUiState.value
@@ -193,12 +196,16 @@ class MainActivity : ComponentActivity() {
                                 recorderPreferences.savePageScale(scale)
                             },
                             enablePredictiveBack = appState.enablePredictiveBack,
+                            floatingBottomBar = appState.floatingBottomBar,
                             selectedAudioIndex = AUDIO_SOURCES
                                 .indexOf(settingsState.selectedAudioSource)
                                 .coerceAtLeast(0),
                             selectedSampleRateIndex = if (
                                 settingsState.selectedSampleRate == RecordingOptions.SAMPLE_RATE_48_KHZ
                             ) 1 else 0,
+                            selectedAudioBitrateIndex = AUDIO_BITRATES
+                                .indexOf(settingsState.selectedAudioBitrate)
+                                .coerceAtLeast(0),
                             selectedVideoResolutionIndex = VIDEO_RESOLUTIONS
                                 .indexOf(settingsState.selectedVideoResolution)
                                 .coerceAtLeast(0),
@@ -228,6 +235,10 @@ class MainActivity : ComponentActivity() {
                                 updateAppUiState { it.copy(enablePredictiveBack = enabled) }
                                 recorderPreferences.saveEnablePredictiveBack(enabled)
                             },
+                            onFloatingBottomBarChanged = { enabled ->
+                                updateAppUiState { it.copy(floatingBottomBar = enabled) }
+                                recorderPreferences.saveFloatingBottomBar(enabled)
+                            },
                             onAudioSelected = { index ->
                                 if (optionsEnabled) {
                                     val audioSource = AUDIO_SOURCES.getOrElse(index) {
@@ -250,6 +261,17 @@ class MainActivity : ComponentActivity() {
                                         it.copy(selectedSampleRate = sampleRate)
                                     }
                                     recorderPreferences.saveSampleRate(sampleRate)
+                                }
+                            },
+                            onAudioBitrateSelected = { index ->
+                                if (optionsEnabled) {
+                                    val bitrate = AUDIO_BITRATES.getOrElse(index) {
+                                        RecordingOptions.DEFAULT_AUDIO_BITRATE
+                                    }
+                                    updateRecordingSettingsUiState {
+                                        it.copy(selectedAudioBitrate = bitrate)
+                                    }
+                                    recorderPreferences.saveAudioBitrate(bitrate)
                                 }
                             },
                             onVideoResolutionSelected = { index ->
@@ -357,6 +379,7 @@ class MainActivity : ComponentActivity() {
                     recordingsContent = {
                         val state = recordingsUiState.value
                         RecordingsScreen(
+                            enablePredictiveBack = appState.enablePredictiveBack,
                             recordings = state.recordings,
                             loading = state.loading,
                             loadFailed = state.loadFailed,
@@ -708,6 +731,7 @@ class MainActivity : ComponentActivity() {
             projectionData,
             state.selectedAudioSource,
             state.selectedSampleRate,
+            state.selectedAudioBitrate,
             state.selectedVideoResolution,
             state.selectedVideoFrameRate,
             state.force16By9Letterboxing,
@@ -798,6 +822,13 @@ class MainActivity : ComponentActivity() {
             AudioSource.INTERNAL_AND_MICROPHONE,
         )
 
+        val AUDIO_BITRATES = listOf(
+            RecordingOptions.AUDIO_BITRATE_64_KBPS,
+            RecordingOptions.AUDIO_BITRATE_128_KBPS,
+            RecordingOptions.AUDIO_BITRATE_192_KBPS,
+            RecordingOptions.AUDIO_BITRATE_256_KBPS,
+        )
+
         val VIDEO_BITRATES = listOf(
             RecordingOptions.VIDEO_BITRATE_AUTO,
             RecordingOptions.VIDEO_BITRATE_4_MBPS,
@@ -844,6 +875,7 @@ private data class AppUiState(
     val selectedThemeMode: Int,
     val pageScale: Int,
     val enablePredictiveBack: Boolean,
+    val floatingBottomBar: Boolean,
 )
 
 @Immutable
@@ -856,6 +888,7 @@ private data class RecordScreenUiState(
 private data class RecordingSettingsUiState(
     val selectedAudioSource: AudioSource,
     val selectedSampleRate: Int,
+    val selectedAudioBitrate: Int,
     val selectedVideoResolution: Int,
     val selectedVideoFrameRate: Int,
     val force16By9Letterboxing: Boolean,

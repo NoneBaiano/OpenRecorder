@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 final class InternalAudioRecorder {
     private static final String TAG = "InternalAudioRecorder";
-    private static final int BIT_RATE = 196_000;
     private static final int CHANNEL_COUNT = 1;
     private static final int READ_SAMPLES = 4096;
     private static final float MIC_GAIN = 1.4f;
@@ -36,6 +35,7 @@ final class InternalAudioRecorder {
     private final boolean capturePlayback;
     private final boolean includeMicrophone;
     private final int sampleRate;
+    private final int audioBitrate;
     private final AtomicReference<Exception> failure = new AtomicReference<>();
     private final AtomicBoolean codecResourcesFinished = new AtomicBoolean();
     private final MediaCodec.BufferInfo codecBufferInfo = new MediaCodec.BufferInfo();
@@ -65,7 +65,8 @@ final class InternalAudioRecorder {
             Context context,
             MediaProjection projection,
             AudioSource audioSource,
-            int sampleRate) {
+            int sampleRate,
+            int audioBitrate) {
         this.context = context.getApplicationContext();
         this.projection = projection;
         this.capturePlayback = audioSource.usesInternalAudio();
@@ -74,6 +75,7 @@ final class InternalAudioRecorder {
             throw new IllegalArgumentException("An audio capture source is required");
         }
         this.sampleRate = RecordingOptions.normalizeSampleRate(sampleRate);
+        this.audioBitrate = RecordingOptions.normalizeAudioBitrate(audioBitrate);
     }
 
     synchronized void prepare() throws IOException {
@@ -191,7 +193,7 @@ final class InternalAudioRecorder {
         codecFormat.setInteger(
                 MediaFormat.KEY_AAC_PROFILE,
                 MediaCodecInfo.CodecProfileLevel.AACObjectLC);
-        codecFormat.setInteger(MediaFormat.KEY_BIT_RATE, BIT_RATE);
+        codecFormat.setInteger(MediaFormat.KEY_BIT_RATE, audioBitrate);
         codecFormat.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, bufferSize);
         codec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_AUDIO_AAC);
         codec.configure(codecFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);

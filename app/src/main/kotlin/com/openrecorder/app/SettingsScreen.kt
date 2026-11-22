@@ -88,8 +88,10 @@ internal fun SettingsScreen(
     pageScale: Int,
     onPageScaleSelected: (Int) -> Unit,
     enablePredictiveBack: Boolean,
+    floatingBottomBar: Boolean,
     selectedAudioIndex: Int,
     selectedSampleRateIndex: Int,
+    selectedAudioBitrateIndex: Int,
     selectedVideoResolutionIndex: Int,
     selectedVideoFrameRateIndex: Int,
     force16By9Letterboxing: Boolean,
@@ -102,8 +104,10 @@ internal fun SettingsScreen(
     optionsEnabled: Boolean,
     onThemeSelected: (Int) -> Unit,
     onEnablePredictiveBackChanged: (Boolean) -> Unit,
+    onFloatingBottomBarChanged: (Boolean) -> Unit,
     onAudioSelected: (Int) -> Unit,
     onSampleRateSelected: (Int) -> Unit,
+    onAudioBitrateSelected: (Int) -> Unit,
     onVideoResolutionSelected: (Int) -> Unit,
     onVideoFrameRateSelected: (Int) -> Unit,
     onForce16By9LetterboxingChanged: (Boolean) -> Unit,
@@ -223,6 +227,14 @@ internal fun SettingsScreen(
             context.getString(R.string.sample_rate_48),
         )
     }
+    val audioBitrateOptions = remember(context) {
+        listOf(
+            context.getString(R.string.audio_bitrate_64),
+            context.getString(R.string.audio_bitrate_128),
+            context.getString(R.string.audio_bitrate_192),
+            context.getString(R.string.audio_bitrate_256),
+        )
+    }
     val videoResolutionOptions = remember(context) {
         listOf(
             context.getString(R.string.video_resolution_native),
@@ -303,7 +315,7 @@ internal fun SettingsScreen(
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
                 contentPadding = PaddingValues(
                     top = innerPadding.calculateTopPadding(),
-                    bottom = 28.dp,
+                    bottom = 28.dp + LocalFloatingNavigationBottomPadding.current,
                 ),
             ) {
                 item {
@@ -335,6 +347,12 @@ internal fun SettingsScreen(
                             summary = stringResource(R.string.enable_predictive_back_summary),
                             checked = enablePredictiveBack,
                             onCheckedChange = onEnablePredictiveBackChanged,
+                        )
+                        SwitchPreference(
+                            title = stringResource(R.string.floating_bottom_bar),
+                            summary = stringResource(R.string.floating_bottom_bar_summary),
+                            checked = floatingBottomBar,
+                            onCheckedChange = onFloatingBottomBarChanged,
                         )
                     }
                 }
@@ -381,6 +399,16 @@ internal fun SettingsScreen(
                             dismissRequestKey = popupDismissRequestKey,
                             onExpandedChange = { settingsPopupExpanded = it },
                             onSelected = onSampleRateSelected,
+                        )
+                        SelectablePreference(
+                            title = stringResource(R.string.audio_bitrate_label),
+                            items = audioBitrateOptions,
+                            selectedIndex = selectedAudioBitrateIndex,
+                            enabled = optionsEnabled,
+                            predictiveBackEnabled = enablePredictiveBack,
+                            dismissRequestKey = popupDismissRequestKey,
+                            onExpandedChange = { settingsPopupExpanded = it },
+                            onSelected = onAudioBitrateSelected,
                         )
                         SwitchPreference(
                             title = stringResource(R.string.force_16_by_9_letterboxing),
@@ -678,7 +706,7 @@ private fun NonPredictiveBackDropdownPreference(
 }
 
 @Composable
-private fun NonPredictivePopupBackHandler(
+internal fun NonPredictivePopupBackHandler(
     enabled: Boolean,
     onBack: () -> Unit,
 ) {

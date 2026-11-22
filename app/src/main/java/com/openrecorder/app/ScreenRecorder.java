@@ -47,6 +47,7 @@ final class ScreenRecorder {
     private final Intent resultData;
     private final AudioSource audioSource;
     private final int audioSampleRate;
+    private final int audioBitrate;
     private final int videoResolution;
     private final int videoFrameRate;
     private final boolean force16By9Letterboxing;
@@ -86,6 +87,7 @@ final class ScreenRecorder {
             Intent resultData,
             AudioSource audioSource,
             int audioSampleRate,
+            int audioBitrate,
             int videoResolution,
             int videoFrameRate,
             boolean force16By9Letterboxing,
@@ -99,6 +101,7 @@ final class ScreenRecorder {
         this.resultData = resultData;
         this.audioSource = audioSource;
         this.audioSampleRate = RecordingOptions.normalizeSampleRate(audioSampleRate);
+        this.audioBitrate = RecordingOptions.normalizeAudioBitrate(audioBitrate);
         this.videoResolution = RecordingOptions.normalizeVideoResolution(videoResolution);
         this.videoFrameRate = RecordingOptions.normalizeVideoFrameRate(videoFrameRate);
         this.force16By9Letterboxing = force16By9Letterboxing;
@@ -182,7 +185,8 @@ final class ScreenRecorder {
                         context,
                         projection,
                         audioSource.usesInternalAudio() ? AudioSource.INTERNAL : AudioSource.MICROPHONE,
-                        audioSampleRate);
+                        audioSampleRate,
+                        audioBitrate);
                 audioRecorder.prepare();
                 if (audioSource == AudioSource.INTERNAL_AND_MICROPHONE) {
                     // A second encoder produces an independent AAC track in the same MP4.
@@ -190,7 +194,8 @@ final class ScreenRecorder {
                             context,
                             projection,
                             AudioSource.MICROPHONE,
-                            audioSampleRate);
+                            audioSampleRate,
+                            audioBitrate);
                     microphoneRecorder.prepare();
                 }
             } catch (Exception error) {

@@ -138,6 +138,7 @@ class RecorderTileActivity : ComponentActivity() {
             projectionData,
             recorderPreferences.loadAudioSource(),
             recorderPreferences.loadSampleRate(),
+            recorderPreferences.loadAudioBitrate(),
             recorderPreferences.loadVideoResolution(),
             recorderPreferences.loadVideoFrameRate(),
             recorderPreferences.loadForce16By9Letterboxing(),

@@ -66,7 +66,7 @@ internal fun OpenSourceLicensesScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
             contentPadding = PaddingValues(
                 top = innerPadding.calculateTopPadding(),
-                bottom = 28.dp,
+                bottom = 28.dp + LocalFloatingNavigationBottomPadding.current,
             ),
         ) {
             items(

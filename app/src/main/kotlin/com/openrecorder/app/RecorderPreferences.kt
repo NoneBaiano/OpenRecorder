@@ -56,6 +56,12 @@ internal class RecorderPreferences(context: Context) {
             .apply()
     }
 
+    fun loadFloatingBottomBar(): Boolean = preferences.getBoolean(KEY_FLOATING_BOTTOM_BAR, false)
+
+    fun saveFloatingBottomBar(value: Boolean) {
+        preferences.edit().putBoolean(KEY_FLOATING_BOTTOM_BAR, value).apply()
+    }
+
     fun loadAudioSource(): AudioSource = AudioSource.fromOrdinal(
         preferences.getInt(KEY_AUDIO_SOURCE, AudioSource.NONE.ordinal),
     )
@@ -71,6 +77,16 @@ internal class RecorderPreferences(context: Context) {
     fun saveSampleRate(value: Int) {
         preferences.edit()
             .putInt(KEY_SAMPLE_RATE, RecordingOptions.normalizeSampleRate(value))
+            .apply()
+    }
+
+    fun loadAudioBitrate(): Int = RecordingOptions.normalizeAudioBitrate(
+        preferences.getInt(KEY_AUDIO_BITRATE, RecordingOptions.DEFAULT_AUDIO_BITRATE),
+    )
+
+    fun saveAudioBitrate(value: Int) {
+        preferences.edit()
+            .putInt(KEY_AUDIO_BITRATE, RecordingOptions.normalizeAudioBitrate(value))
             .apply()
     }
 
@@ -167,9 +183,11 @@ internal class RecorderPreferences(context: Context) {
         const val KEY_THEME_MODE = "theme_mode"
         const val KEY_PAGE_SCALE = "page_scale"
         const val KEY_ENABLE_PREDICTIVE_BACK = "enable_predictive_back"
+        const val KEY_FLOATING_BOTTOM_BAR = "floating_bottom_bar"
         const val KEY_DISABLE_PREDICTIVE_BACK_LEGACY = "disable_predictive_back"
         const val KEY_AUDIO_SOURCE = "audio_source"
         const val KEY_SAMPLE_RATE = "sample_rate"
+        const val KEY_AUDIO_BITRATE = "audio_bitrate"
         const val KEY_VIDEO_BITRATE = "video_bitrate"
         const val KEY_VIDEO_RESOLUTION = "video_resolution"
         const val KEY_VIDEO_FRAME_RATE = "video_frame_rate"
