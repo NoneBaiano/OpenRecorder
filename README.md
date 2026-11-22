@@ -40,7 +40,7 @@ An open-source screen recorder for Android with internal audio and a modern inte
 
 - Light, dark, or follow-system themes
 - Dynamic color (Monet) variants of each theme
-- Page scale adjust the interface from 90% to 110% using a slider
+- Page scale: adjust the interface from 90% to 110% using a slider
 - Optional predictive back gesture (off by default)
 - Optional floating bottom navigation bar (off by default)
 - Settings are saved between sessions
